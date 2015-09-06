@@ -4,11 +4,11 @@
 
 ## Installation
 
-This package is still in development, but you can get the most recent development version from github:
+This package is still in development, but you can get the most recent development version from [Bryan's GitHub](https://github.com/bpb824):
 
 ```R
 # install.packages("devtools")
 devtools::install_github("bpb824/portalr")
 ```
 
-This package require database credentials to function. 
+This package requires database credentials to function. 
