@@ -1,0 +1,13 @@
+Package: orcycler
+Type: Package
+Title: Exploration and Analysis Tools for ORcycle Data
+Version: 0.1.0
+Authors@R: c(person("Bryan","Blanc",role = c("aut","cre"), email = "bryanpblanc@gmail.com"))
+Author: Bryan Blanc
+Maintainer: <bryanpblanc@gmail.com>
+Description: This package provides tools to manage, explore, and analyze data from the ORcycle smartphone app.
+License: GPL-3
+LazyData: TRUE
+Imports: RPostgreSQL, RMySQL, DBI, rjson, plyr, lubridate, timeDate, ggplot2
+Suggests: knitr
+VignetteBuilder: knitr
