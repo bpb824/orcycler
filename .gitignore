@@ -3,3 +3,4 @@
 .RData
 */db_credentials.json
 inst/doc
+vignettes/exampleData/*

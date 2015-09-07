@@ -1,4 +1,11 @@
-
+#' Weight trips based on link similarity
+#'
+#' @param matchLinksPath Absolute or relative path to map matched links
+#' @param trips 'trip' table in format of SQL table
+#' @param tripMatchSummmary Summary table of matched trips
+#'
+#' @return
+#' @export
 similarityWeight = function(matchLinksPath,trips,tripMatchSummmary){
   orc_gpslinks = read.csv(matchLinksPath)
   matchedTrips= sort(unique(orc_gpslinks$gpstripid))
@@ -44,7 +51,7 @@ similarityWeight = function(matchLinksPath,trips,tripMatchSummmary){
     userTripList[[i]]=userObj
     print(paste0("Calculated similarity for user #",i," of ",n))
   }
-  
+
   for (i in 1:nrow(tripMatchSummary)){
     tid = tripMatchSummary$trip_id[i]
     uid = trips$user_id[trips$id == tid]

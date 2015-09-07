@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>gpsTrimmer. orcycler 0.1.0</title>
+<title>crossTabPlot. orcycler 0.1.0</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -47,26 +47,42 @@
         
       </header>
       
-      <h1>GPS Trimmer</h1>
+      <h1>Cross tablutation plot</h1>
 
 <div class="row">
   <div class="span8">
     <h2>Usage</h2>
-    <pre><div>gpsTrimmer(rawCoords, trimDist)</div></pre>
+    <pre><div>crossTabPlot(data, xVar, yVar, xlab, ylab, colorPal, xCats&nbsp;=&nbsp;levels(x), yCats&nbsp;=&nbsp;levels(y), px&nbsp;=&nbsp;1280, py&nbsp;=&nbsp;560)</div></pre>
     
     <h2>Arguments</h2>
     <dl>
-      <dt>rawCoords</dt>
-      <dd>Raw coordinate table in same format as 'coord' table in SQL database.</dd>
-      <dt>trimDist</dt>
-      <dd>Distance to trim from origin and destination of trip.</dd>
+      <dt>data</dt>
+      <dd>Trip, user, or report table for plotting</dd>
+      <dt>xVar</dt>
+      <dd>Variable divide into seperate bars</dd>
+      <dt>yVar</dt>
+      <dd>Variable to fill sections of bars by</dd>
+      <dt>xlab</dt>
+      <dd>Label for x variable</dd>
+      <dt>ylab</dt>
+      <dd>Label of y variable</dd>
+      <dt>colorPal</dt>
+      <dd>Color pallette to use for plotting</dd>
+      <dt>xCats</dt>
+      <dd>X category names, default is levels of x variable</dd>
+      <dt>yCats</dt>
+      <dd>Y category names, default is levels of y variable</dd>
+      <dt>px</dt>
+      <dd>Width of plot in pixels, default is 1280 pixels</dd>
+      <dt>py</dt>
+      <dd>Height of plot in pixels, default is 560 pixels</dd>
     </dl>
     
     <div class="Value">
       <h2>Value</h2>
 
       <p><dl>
-Trimmed coordinate table
+None
 </dl></p>
   
     </div>
@@ -74,13 +90,13 @@ Trimmed coordinate table
     <div class="Description">
       <h2>Description</h2>
 
-      <p>Trims GPS traces for ORcycle trips from both beginning and end of trip by a given distance (in miles)</p>
+      <p>Cross tablutation plot</p>
   
     </div>
       </div>
   <div class="span4">
     <!-- <ul>
-      <li>gpsTrimmer</li>
+      <li>crossTabPlot</li>
     </ul>
     <ul>
       

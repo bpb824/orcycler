@@ -1,0 +1,72 @@
+---
+title: "Exploring ORcycle Trip Data"
+author: "Bryan Blanc"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Trip Data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+This vignette will demonstrate how to use the functions in `orcycler` to query, prepare, explore, and analyze trip data from ORcycle. 
+
+##Initialization
+```{r,message=FALSE}
+#Load necessary libraries for vignette
+require(orcycler)
+require(DBI)
+require(RMySQL)
+require(lubridate)
+require(rjson)
+
+
+###Read in db authentication info
+cred = rjson::fromJSON(file="exampleData/db_credentials.json")
+db_cred = cred$db_credentials$test
+  
+####Connect to ORcycle db, make sure you VPN into cecs network
+con = dbConnect(dbDriver("MySQL"), host=db_cred$db_host, port= 3306, user=db_cred$db_user,
+                password = db_cred$db_pass, dbname=db_cred$db_name)
+
+
+#Query example data, in `tripAnalysis` function, all data will be queried
+# coords= DBI::dbReadTable(con, "coord")
+# trips = DBI::dbReadTable(con, "trip")
+# tripResponses = DBI::dbReadTable(con, "tripResponse")
+# questions = DBI::dbReadTable(con, "questions")
+# answers = DBI::dbReadTable(con,"answers")
+# qaMap = DBI::dbReadTable(con,"question_answer_relate")
+# users = DBI::dbReadTable(con,"user")
+```
+
+```{r,echo=FALSE,warning=FALSE}
+load("exampleData/tripData.RData")
+```
+
+```{r}
+#subset trips by
+#1.) Exclude flagged users and
+#2.) Exclude trips with trip details set to 'test'
+flagged = users$id[users$flagUser ==1]
+trips = subset(trips,!(trips$user_id %in% flagged))
+tripResponses = subset(tripResponses, tripResponses$trip_id %in% trips$id)
+trips = subset(trips,trips$n_coord>0)
+trips = subset(trips, trips$notes!="test")
+coords = subset(coords,coords$trip_id %in% trips$id)
+```
+
+##Trip Data Prepration
+```{r,results='hide'}
+trips = trips[1:50,]
+tripSummary = tripPrep(trips=trips,tripResponses=tripResponses,
+                         answers=answers,questions=questions,
+                         qaMap=qaMap,coords=coords)
+
+```
+
+## Last Steps
+Always close all your connections when you are done.
+```{r}
+dbDisconnect(con)
+```

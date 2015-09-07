@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>gpsTrimmer. orcycler 0.1.0</title>
+<title>forestplot. orcycler 0.1.0</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -47,26 +47,36 @@
         
       </header>
       
-      <h1>GPS Trimmer</h1>
+      <h1>forestPlot</h1>
 
 <div class="row">
   <div class="span8">
     <h2>Usage</h2>
-    <pre><div>gpsTrimmer(rawCoords, trimDist)</div></pre>
+    <pre><div>forestplot(model, xlab&nbsp;=&nbsp;"Odds Ratio", ylab&nbsp;=&nbsp;"Independent Variable", title, outputDir, rownames&nbsp;=&nbsp;NULL, xRng&nbsp;=&nbsp;NULL)</div></pre>
     
     <h2>Arguments</h2>
     <dl>
-      <dt>rawCoords</dt>
-      <dd>Raw coordinate table in same format as 'coord' table in SQL database.</dd>
-      <dt>trimDist</dt>
-      <dd>Distance to trim from origin and destination of trip.</dd>
+      <dt>model</dt>
+      <dd>Cumulative logistic regression model object</dd>
+      <dt>xlab</dt>
+      <dd>X-axis label, default = "Odds Ratio"</dd>
+      <dt>ylab</dt>
+      <dd>Y-Axis label, default = "Independent Variable"</dd>
+      <dt>title</dt>
+      <dd>Plot title</dd>
+      <dt>outputDir</dt>
+      <dd>Where to plot the .png output</dd>
+      <dt>rownames</dt>
+      <dd>Optional row names parameter</dd>
+      <dt>xRng</dt>
+      <dd>X-axis range</dd>
     </dl>
     
     <div class="Value">
       <h2>Value</h2>
 
       <p><dl>
-Trimmed coordinate table
+None
 </dl></p>
   
     </div>
@@ -74,13 +84,13 @@ Trimmed coordinate table
     <div class="Description">
       <h2>Description</h2>
 
-      <p>Trims GPS traces for ORcycle trips from both beginning and end of trip by a given distance (in miles)</p>
+      <p>Create a forest plot to visualize cumulative logistic regression model coefficients</p>
   
     </div>
       </div>
   <div class="span4">
     <!-- <ul>
-      <li>gpsTrimmer</li>
+      <li>forestplot</li>
     </ul>
     <ul>
       

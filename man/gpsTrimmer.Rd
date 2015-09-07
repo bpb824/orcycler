@@ -17,7 +17,4 @@ Trimmed coordinate table
 \description{
 Trims GPS traces for ORcycle trips from both beginning and end of trip by a given distance (in miles)
 }
-\examples{
-gpsTrimmer(coords,0.05)
-}
 

@@ -3,12 +3,9 @@
 #' Trims GPS traces for ORcycle trips from both beginning and end of trip by a given distance (in miles)
 #'
 #' @param rawCoords Raw coordinate table in same format as 'coord' table in SQL database.
-#' @param trimDist Distance to trim from origin and destination of trip. 
+#' @param trimDist Distance to trim from origin and destination of trip.
 #'
 #' @return Trimmed coordinate table
-#'
-#' @examples
-#' gpsTrimmer(coords,0.05)
 #'
 #' @export
 
@@ -18,7 +15,7 @@
 ##Function definition
 gpsTrimmer = function (rawCoords,trimDist){
   require(geosphere)
-  
+
   tids = sort(unique(rawCoords$trip_id))
   tripList = list()
   for (i in 1:length(tids)){
@@ -28,7 +25,7 @@ gpsTrimmer = function (rawCoords,trimDist){
     subCoords = subset(rawCoords, rawCoords$trip_id==tid)
     start = subCoords[1,c("longitude","latitude")]
     end = subCoords[nrow(subCoords),c("longitude","latitude")]
-    
+
     ###trim from front
     flag = FALSE
     fDist = 0
@@ -45,7 +42,7 @@ gpsTrimmer = function (rawCoords,trimDist){
     }
     if(!flag){
       frontTrimCoords = subCoords[j:nrow(subCoords),]
-      
+
       ##trim from back
       bFlag = FALSE
       bDist = 0
@@ -69,12 +66,12 @@ gpsTrimmer = function (rawCoords,trimDist){
     }else{
       tripCoords[["trimmedCoords"]]=NA
     }
-    
+
     tripList[[i]]=tripCoords
-    
+
     print(paste("Trimmed trip ",i," of ",length(tids)))
   }
-  
+
   rowCount = 0
   for (i in 1:length(tripList)){
     trimmedCoords = tripList[[i]][["trimmedCoords"]]
@@ -82,10 +79,10 @@ gpsTrimmer = function (rawCoords,trimDist){
       rowCount = rowCount+ nrow(trimmedCoords)
     }
   }
-  
+
   newCoords = data.frame(matrix(nrow=rowCount,ncol=ncol(coords)))
   colnames(newCoords)=colnames(coords)
-  
+
   ri=1
   for(i in 1:length(tripList)){
     trimmedCoords = tripList[[i]][["trimmedCoords"]]
@@ -95,6 +92,6 @@ gpsTrimmer = function (rawCoords,trimDist){
     }
     print(paste("pasted trip ",i," of ",length(tripList)))
   }
-  
+
   return(newCoords)
 }

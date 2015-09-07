@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>hello. orcycler 0.1.0</title>
+<title>reportPrep. orcycler 0.1.0</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -47,29 +47,50 @@
         
       </header>
       
-      <h1>Hello, World!</h1>
+      <h1>Prepare report data</h1>
 
 <div class="row">
   <div class="span8">
     <h2>Usage</h2>
-    <pre><div>hello()</div></pre>
-        
+    <pre><div>reportPrep(reportType, users, notes, noteResponses, questions, answers, qaMap)</div></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>reportType</dt>
+      <dd>Type of report to prepare summary for (0 or 1)</dd>
+      <dt>users</dt>
+      <dd>User data in format of 'user' table from SQL database</dd>
+      <dt>notes</dt>
+      <dd>Note data in format of 'note' table from SQL database</dd>
+      <dt>noteResponses</dt>
+      <dd>Note response data in format of 'noteResponse' table from SQL database</dd>
+      <dt>questions</dt>
+      <dd>Question cross reference table from SQL database</dd>
+      <dt>answers</dt>
+      <dd>Answer cross reference table from SQL database</dd>
+      <dt>qaMap</dt>
+      <dd>Question-answer map cross reference table from SQL database</dd>
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+
+      <p><dl>
+None
+</dl></p>
+  
+    </div>
+
     <div class="Description">
       <h2>Description</h2>
 
-      <p>Prints 'Hello, world!'.</p>
+      <p>Prepare report data</p>
   
     </div>
-    
-    <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'>hello()
-</div>
-<div class='output'>[1] &quot;Hello, world!&quot;
-</div></pre>
-  </div>
+      </div>
   <div class="span4">
     <!-- <ul>
-      <li>hello</li>
+      <li>reportPrep</li>
     </ul>
     <ul>
       

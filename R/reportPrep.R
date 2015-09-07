@@ -1,3 +1,15 @@
+#' Prepare report data
+#'
+#' @param reportType Type of report to prepare summary for (0 or 1)
+#' @param users User data in format of 'user' table from SQL database
+#' @param notes Note data in format of 'note' table from SQL database
+#' @param noteResponses Note response data in format of 'noteResponse' table from SQL database
+#' @param questions Question cross reference table from SQL database
+#' @param answers Answer cross reference table from SQL database
+#' @param qaMap Question-answer map cross reference table from SQL database
+#'
+#' @return None
+#' @export
 reportPrep = function(reportType,users,notes,noteResponses,questions,answers,qaMap){
   noteResponses = subset(noteResponses,noteResponses$question_id !=0)
   numCrashes = length(unique(subset(noteResponses,noteResponses$question_id == 28)$note_id))
@@ -7,7 +19,7 @@ reportPrep = function(reportType,users,notes,noteResponses,questions,answers,qaM
     crashList = unique(subset(noteResponses, noteResponses$question_id==28)$note_id)
     crashResponses = subset(noteResponses,noteResponses$note_id %in% crashList)
     crashes = subset(notes, notes$id %in% crashList)
-    
+
     cols = c("note_id","severity","conflict_NA","conflict_1","conflict_2","conflict_3",
              "conflict_4","conflict_5","conflict_6","conflict_7",
              "conflict_8","conflict_9","conflict_10",
@@ -24,13 +36,13 @@ reportPrep = function(reportType,users,notes,noteResponses,questions,answers,qaM
     m_qids=c(29,32,33)
     multiple=cols[3:length(cols)]
     offsets = c(4,15,26)
-    
+
     ##Severity
     qid = 28
     possibleAnswers = subset(qaMap,qaMap$question_id == qid)$answer_id
     levels = rev(subset(answers,answers$id %in% possibleAnswers)$text)
     levels = levels[2:length(levels)]
-    
+
     for (i in 1:nrow(crashModelTab)){
       nid = crashModelTab$note_id[i]
       if (qid %in% subset(crashResponses,crashResponses$note_id == nid)$question_id){
@@ -40,16 +52,16 @@ reportPrep = function(reportType,users,notes,noteResponses,questions,answers,qaM
           crashModelTab[i,"severity"] = NA
         }else{
           crashModelTab[i,"severity"] = text
-        } 
+        }
       }else{
         crashModelTab[i,"severity"] = NA
       }
     }
     crashModelTab[,"severity"] = factor(crashModelTab[,"severity"],levels = levels, ordered = TRUE)
-    
+
     ###Multiple Choice
     crashModelTab[,multiple]=FALSE
-    
+
     for (j in 1:length(m_qids)){
       qid = m_qids[j]
       off = offsets[j]
@@ -72,14 +84,14 @@ reportPrep = function(reportType,users,notes,noteResponses,questions,answers,qaM
         }
       }
     }
-    
+
     return(crashModelTab)
-    
+
   }else if (reportType==1){
     issueList = unique(subset(noteResponses, noteResponses$question_id==31)$note_id)
     issueResponses = subset(noteResponses,noteResponses$note_id %in% issueList)
     issues = subset(notes,notes$id %in% issueList)
-    
+
     cols = c("note_id","urgency","issueType_NA","issueType_1","issueType_2","issueType_3",
              "issueType_4","issueType_5","issueType_6","issueType_7",
              "issueType_8","issueType_9","issueType_10","issueType_11",
@@ -88,13 +100,13 @@ reportPrep = function(reportType,users,notes,noteResponses,questions,answers,qaM
     colnames(issueModelTab)=cols
     issueList = issues$id
     issueModelTab$note_id=issueList
-    
+
     ##Urgency
     qid = 31
     possibleAnswers = subset(qaMap,qaMap$question_id == qid)$answer_id
     levels = subset(answers,answers$id %in% possibleAnswers)$text
     levels = levels[1:length(levels)-1]
-    
+
     for (i in 1:nrow(issueModelTab)){
       nid = issueModelTab$note_id[i]
       if (qid %in% subset(issueResponses,issueResponses$note_id == nid)$question_id){
@@ -104,13 +116,13 @@ reportPrep = function(reportType,users,notes,noteResponses,questions,answers,qaM
           issueModelTab[i,"urgency"] = NA
         }else{
           issueModelTab[i,"urgency"] = text
-        } 
+        }
       }else{
         issueModelTab[i,"urgency"] = NA
       }
     }
     issueModelTab[,"urgency"] = factor(issueModelTab[,"urgency"],levels = levels, ordered = TRUE)
-    
+
     ###Multiple Choice
     issueModelTab[,3:ncol(issueModelTab)]=FALSE
     qid = 30

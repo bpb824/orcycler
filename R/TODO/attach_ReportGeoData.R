@@ -1,7 +1,3 @@
-library(rgdal)
-library(sp)
-library(rgeos)
-
 attach_ReportGeoData = function(reportSummary,notes){
   notes= subset(notes, notes$id %in% reportSummary$note_id)
   points = data.frame(matrix(ncol=3,nrow = nrow(notes)))
@@ -9,12 +5,12 @@ attach_ReportGeoData = function(reportSummary,notes){
   points$id = notes$id
   points$X = notes$longitude
   points$Y = notes$latitude
-  
+
   #WGS 84 coordinate system
   coordSys=CRS("+init=epsg:4326")
-  
+
 #####Administrative Boundaries
-  
+
   ###Extract city
   cities = readOGR(dsn = "source_data/gis_data/State\ Level/city_boundaries", layer = "citylim_2014")
   proj4string = cities@proj4string
@@ -22,7 +18,7 @@ attach_ReportGeoData = function(reportSummary,notes){
   coordinates(points)=~X+Y
   points@proj4string = CRS("+init=epsg:4326")
   reportSummary$city = "other"
-  
+
   for (i in 1:nrow(points@data)){
     for (j in 1:nrow(cities@data)){
       point.x = points@coords[i,1]
@@ -35,13 +31,13 @@ attach_ReportGeoData = function(reportSummary,notes){
       }
     }
   }
-  
+
   ##Extract County
   counties = readOGR(dsn = "source_data/gis_data/State\ Level/county_boundaries", layer = "orcntypoly")
   proj4string = counties@proj4string
   counties  = spTransform(counties,CRS('+proj=longlat +datum=NAD83'))
   reportSummary$county = "other"
-  
+
   for (i in 1:nrow(points@data)){
     for (j in 1:nrow(counties@data)){
       point.x = points@coords[i,1]
@@ -54,7 +50,7 @@ attach_ReportGeoData = function(reportSummary,notes){
       }
     }
   }
-  
+
   ###Extract State
   oregon = readOGR(dsn = "source_data/gis_data/State\ Level/or_state_boundary", layer = "or_state_boundary")
   oregon  = spTransform(oregon,CRS('+proj=longlat +datum=NAD83'))
@@ -62,27 +58,27 @@ attach_ReportGeoData = function(reportSummary,notes){
   oregonBound = oregon@polygons[[28]]@Polygons[[1]]
   poly.x = oregonBound@coords[,1]
   poly.y = oregonBound@coords[,2]
-  
+
   for (i in 1:nrow(points@data)){
     point.x = points@coords[i,1]
-    point.y = points@coords[i,2] 
+    point.y = points@coords[i,2]
     if(point.in.polygon(point.x,point.y,poly.x,poly.y)){
       reportSummary$state[i] = "Oregon"
     }
   }
-  
-#####Link information 
+
+#####Link information
 
   modelNetwork = readOGR("source_data/modelNetwork","wbnet2012")
   buffWidth = 100
-  
+
   networkHull = gConvexHull(modelNetwork)
   points = spTransform(points, networkHull@proj4string)
   points@proj4string=networkHull@proj4string
   metroPointsBool = !is.na(as.logical(over(points,networkHull,returnList = TRUE)))
-  
+
   reportSummary$insideNetwork = metroPointsBool
-  
+
   for (i in 1:nrow(reportSummary)){
     if(reportSummary$insideNetwork[i]){
       nid = reportSummary$note_id[i]
@@ -105,39 +101,39 @@ attach_ReportGeoData = function(reportSummary,notes){
       }else{
         nearestLink=NA
       }
-      
+
     }else{
       nearestLink=NA
     }
     reportSummary$psuid[i] = nearestLink
     print(paste0("Found nearest link for report # ",i," of ",nrow(reportSummary)))
   }
-  
+
   netAtts = read.csv("source_data/modelNetwork/networkLink_Attributes.csv")
-  
+
   reportSummary = join(reportSummary,netAtts,by="psuid")
-  
-#   
+
+#
 #   #####Check if reports were on ODOT facilities
 #   odotHwys = readOGR(dsn ="source_data/gis_data/State\ Level/odot_gis_data", layer = "hwynet2011")
 #   proj4string = odotHwys@proj4string
-#   odotHwysBuff = gBuffer(odotHwys, width=buffWidth) 
+#   odotHwysBuff = gBuffer(odotHwys, width=buffWidth)
 #   odotHwysBuffWGS  = spTransform(odotHwysBuff,coordSys)
 #   proj4string = proj4string(odotHwysBuffWGS)
 #   reportSummary$onODOT = FALSE
 #   onODOT <- !is.na(over(as(points,"SpatialPoints"), as(odotHwysBuffWGS, "SpatialPolygons")))
 #   reportSummary$onODOT = onODOT
-#   
+#
 #   ######Check numbers of lanes of auto facility adjacent to report
 #   numLanes = readOGR(dsn = "source_data/gis_data/State\ Level/odot_gis_data",layer = "number_of_lanes_2011")
 #   proj4string = numLanes@proj4string
-#   numLanesBuff = gBuffer(numLanes, width=buffWidth, byid = TRUE) 
+#   numLanesBuff = gBuffer(numLanes, width=buffWidth, byid = TRUE)
 #   numLanesBuffWGS  = spTransform(numLanesBuff,CRS('+proj=longlat +datum=NAD83'))
 #   proj4string = proj4string(numLanesBuffWGS)
 #   reportSummary$numLanes = NA
-#   
+#
 #   numLanesData = numLanes@data
-#   
+#
 #   for (i in 1:nrow(reportSummary)){
 #     point = data.frame(matrix(nrow = 1,ncol = 2))
 #     colnames(point)=c("x","y")
@@ -149,9 +145,9 @@ attach_ReportGeoData = function(reportSummary,notes){
 #     print (paste("Over result for crash #", reportID, " is ", id ))
 #     if(!is.na(id)){
 #       reportSummary$numLanes[i] = numLanesData$NO_LANES[id]
-#     } 
+#     }
 #   }
-#   
-  
+#
+
   return(reportSummary)
 }

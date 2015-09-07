@@ -1,5 +1,20 @@
+#' Cross tablutation plot
+#'
+#' @param data Trip, user, or report table for plotting
+#' @param xVar Variable divide into seperate bars
+#' @param yVar Variable to fill sections of bars by
+#' @param xlab Label for x variable
+#' @param ylab Label of y variable
+#' @param colorPal Color pallette to use for plotting
+#' @param xCats X category names, default is levels of x variable
+#' @param yCats Y category names, default is levels of y variable
+#' @param px Width of plot in pixels, default is 1280 pixels
+#' @param py Height of plot in pixels, default is 560 pixels
+#'
+#' @return None
+#' @export
 crossTabPlot= function(data,xVar,yVar,xlab,ylab,colorPal,xCats=levels(x),yCats=levels(y),px=1280,py=560){
-  x = data[,xVar] 
+  x = data[,xVar]
   y = data[,yVar]
   chi = chisq.test(x,y,simulate.p.value = TRUE)
   dfo = as.data.frame(table(x,y))
@@ -9,7 +24,7 @@ crossTabPlot= function(data,xVar,yVar,xlab,ylab,colorPal,xCats=levels(x),yCats=l
   labs = c("0%","25%","50%","75%","100%")
   numLevs = length(levels(y))
   plotDir = "results/plots_doubleVar/users/"
-  
+
   source("functions/wrap_sentance.R")
   char25 = FALSE
   for (i in xCats){
@@ -29,7 +44,7 @@ crossTabPlot= function(data,xVar,yVar,xlab,ylab,colorPal,xCats=levels(x),yCats=l
     }
     xCats=xLabs
   }
-  
+
   png(file = paste(plotDir,xlab,"_vs_",ylab,".png",sep = "") ,width = px, height = py, units = "px", bg = "transparent")
     g = ggplot(df, aes(x = x)) + geom_bar(aes(weight=Freq, fill = y), position = 'fill') + scale_y_continuous("",breaks = breaks,labels = labs) +scale_x_discrete(labels = xCats)+xlab(xlab)+ scale_fill_manual(name = ylab,values = colorPal,labels = yCats)+coord_flip()+geom_text(aes(label = Freq, y = pos), size = 6)
     if(length(chi)>1){

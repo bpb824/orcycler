@@ -8,6 +8,6 @@ Maintainer: <bryanpblanc@gmail.com>
 Description: This package provides tools to manage, explore, and analyze data from the ORcycle smartphone app.
 License: GPL-3
 LazyData: TRUE
-Imports: RPostgreSQL, RMySQL, DBI, rjson, plyr, lubridate, timeDate, ggplot2
+Imports: stats, RPostgreSQL, RMySQL, DBI, rjson, plyr, lubridate, timeDate, ggplot2, rgdal, rgeos, sp, Hmisc, shapefiles
 Suggests: knitr
 VignetteBuilder: knitr

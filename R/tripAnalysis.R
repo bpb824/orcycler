@@ -19,7 +19,7 @@ tripAnalysis = function(db="test", db_path = "data/db_credentials.json"){
   require(rjson)
 
   ###Read in db authentication info
-  cred = fromJSON(file=db_path)
+  cred = rjson::fromJSON(file=db_path)
   if(db =="test"){
     db_cred = cred$db_credentials$test
   }else if(db=="release"){
@@ -30,22 +30,28 @@ tripAnalysis = function(db="test", db_path = "data/db_credentials.json"){
 
   ####Connect to ORcycle db
   ####Make sure you VPN into cecs network
-  con <- dbConnect(dbDriver("MySQL"), host=db_cred$db_host, port= 3306, user=db_cred$db_user, password = db_cred$db_pass, dbname=db_cred$db_name)
+  con <- DBI::dbConnect(dbDriver("MySQL"), host=db_cred$db_host, port= 3306, user=db_cred$db_user, password = db_cred$db_pass, dbname=db_cred$db_name)
 
-  coords= dbReadTable(con, "coord")
-  trips = dbReadTable(con, "trip")
-  tripResponses = dbReadTable(con, "tripResponse")
-  questions = dbReadTable(con, "questions")
-  answers = dbReadTable(con,"answers")
-  qaMap = dbReadTable(con,"question_answer_relate")
+  #Read raw tables from MySQL database
+  print("reading tables from database, takes at ~1 minute or more")
+  coords= DBI::dbReadTable(con, "coord")
+  trips = DBI::dbReadTable(con, "trip")
+  tripResponses = DBI::dbReadTable(con, "tripResponse")
+  questions = DBI::dbReadTable(con, "questions")
+  answers = DBI::dbReadTable(con,"answers")
+  qaMap = DBI::dbReadTable(con,"question_answer_relate")
+  users = DBI::dbReadTable(con,"user")
+  print("Finished reading tables from database")
 
-  users = dbReadTable(con,"user")
+  #subset trips by
+  #1.) Exclude flagged users and
+  #2.) Exclude trips with trip details set to 'test'
   flagged = users$id[users$flagUser ==1]
   trips = subset(trips,!(trips$user_id %in% flagged))
   tripResponses = subset(tripResponses, tripResponses$trip_id %in% trips$id)
-  coords = subset(coords,coords$trip_id %in% trips$id)
-
   trips = subset(trips,trips$n_coord>0)
+  trips = subset(trips, trips$notes!="test")
+  coords = subset(coords,coords$trip_id %in% trips$id)
 
   ###Combine useful data from db tables into one table for exploration/modeling/graphing
   ##trip statistics calculation takes a little while, progress will print to console

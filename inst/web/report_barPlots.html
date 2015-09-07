@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>gpsTrimmer. orcycler 0.1.0</title>
+<title>report_barPlots. orcycler 0.1.0</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -47,26 +47,26 @@
         
       </header>
       
-      <h1>GPS Trimmer</h1>
+      <h1>Plot distribution plots for report variables</h1>
 
 <div class="row">
   <div class="span8">
     <h2>Usage</h2>
-    <pre><div>gpsTrimmer(rawCoords, trimDist)</div></pre>
+    <pre><div>report_barPlots(reportSummary, reportType)</div></pre>
     
     <h2>Arguments</h2>
     <dl>
-      <dt>rawCoords</dt>
-      <dd>Raw coordinate table in same format as 'coord' table in SQL database.</dd>
-      <dt>trimDist</dt>
-      <dd>Distance to trim from origin and destination of trip.</dd>
+      <dt>reportSummary</dt>
+      <dd>Prepared report data summary</dd>
+      <dt>reportType</dt>
+      <dd>Type of report to produce plots for (options are 0 or 1)</dd>
     </dl>
     
     <div class="Value">
       <h2>Value</h2>
 
       <p><dl>
-Trimmed coordinate table
+None
 </dl></p>
   
     </div>
@@ -74,13 +74,13 @@ Trimmed coordinate table
     <div class="Description">
       <h2>Description</h2>
 
-      <p>Trims GPS traces for ORcycle trips from both beginning and end of trip by a given distance (in miles)</p>
+      <p>Plot distribution plots for report variables</p>
   
     </div>
       </div>
   <div class="span4">
     <!-- <ul>
-      <li>gpsTrimmer</li>
+      <li>report_barPlots</li>
     </ul>
     <ul>
       

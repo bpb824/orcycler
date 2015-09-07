@@ -8,7 +8,7 @@ This package is still in development, but you can get the most recent developmen
 
 ```R
 # install.packages("devtools")
-devtools::install_github("bpb824/portalr")
+devtools::install_github("bpb824/orcycler")
 ```
 
 This package requires database credentials to function. 
