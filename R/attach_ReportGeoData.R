@@ -1,4 +1,12 @@
+#' Attach geographic data to reports
+#'
+#' @param reportSummary
+#' @param notes
+#'
+#' @return None
+#' @export
 attach_ReportGeoData = function(reportSummary,notes){
+
   notes= subset(notes, notes$id %in% reportSummary$note_id)
   points = data.frame(matrix(ncol=3,nrow = nrow(notes)))
   colnames(points) = c("id","X","Y")

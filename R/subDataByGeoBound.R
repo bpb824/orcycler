@@ -1,4 +1,4 @@
-#' Title
+#' Subset data by geographic boundary
 #'
 #' @param con Database connection object
 #' @param boundShape Geographc subsetting boundary (SpatialPolygons object)
@@ -8,7 +8,7 @@
 #' @param privacy Boolean indicating whether to include user IDs (not included if TRUE)
 #' @param include_qa Boolean indicating if question answer dictionaries will be included in output folder
 #'
-#' @return
+#' @return None
 #' @export
 
 subDataByGeoBound= function(con,boundShape,folderName,startDate,endDate,privacy = FALSE,include_qa=TRUE){

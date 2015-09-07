@@ -4,7 +4,7 @@
 
 ## Installation
 
-This package is still in development, but you can get the most recent development version from [Bryan's GitHub](https://github.com/bpb824):
+This package is still in development, but you can get the most recent development version from [Bryan's GitHub](https://github.com/bpb824/orcycler):
 
 ```R
 # install.packages("devtools")

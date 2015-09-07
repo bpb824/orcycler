@@ -3,7 +3,7 @@ sd_section(
   "These functions are used to query, prepare, explore, and analyze trip data.",
   c("tripAnalysis", "gpsTrimmer", "tripPrep","attach_TripGeoData",
     "attach_TripTimeData", "attach_TripWeatherData","trip_barPlots",
-    "updateMapMatchCoords","updateMapMatchLinks")
+    "updateMapMatchCoords","updateMapMatchLinks","similarityWeight")
 )
 sd_section(
   "User Functions",
@@ -13,10 +13,10 @@ sd_section(
 sd_section(
   "Report Functions",
   "These functions are used to query, prepare, explore, and analyze report data.",
-  c("report_barPlots", "reportPrep")
+  c("report_barPlots", "reportPrep","attach_ReportGeoData")
 )
 sd_section(
   "General Use Functions",
   "These functions are used by other functions in the package.",
-  c("imputeResponses", "wrap_sentence","forestplot","crossTabPlot")
+  c("imputeResponses", "wrap_sentence","forestplot","crossTabPlot","subDataByGeoBound")
 )

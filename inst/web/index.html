@@ -51,11 +51,11 @@
   <div class="span8">
     <h1>orcycler</h1>
 
-<p><code>orcycler</code> is an R package for managing, exploring, and analyzing data from the ORcycle smartphone app. For more information about ORcycle, visit <a href="http://www.pdx.edu/transportation-lab/orcycle">http://www.pdx.edu/transportation-lab/orcycle</a>. The <code>orcycler</code> package is being documented using <code>staticdocs</code> at <a href="http://orcycle2.cecs.pdx.edu/orcycler/">http://orcycle2.cecs.pdx.edu/orcycler/</a></p>
+<p><code>orcycler</code> is an R package for managing, exploring, and analyzing data from the ORcycle smartphone app. For more information about ORcycle, visit <a href="http://www.pdx.edu/transportation-lab/orcycle">http://www.pdx.edu/transportation-lab/orcycle</a>. The <code>orcycler</code> package is being documented using <a href="http://staticdocs.had.co.nz/dev/"><code>staticdocs</code></a> at <a href="http://orcycle2.cecs.pdx.edu/orcycler/">http://orcycle2.cecs.pdx.edu/orcycler/</a></p>
 
 <h2>Installation</h2>
 
-<p>This package is still in development, but you can get the most recent development version from <a href="https://github.com/bpb824">Bryan&#39;s GitHub</a>:</p>
+<p>This package is still in development, but you can get the most recent development version from <a href="https://github.com/bpb824/orcycler">Bryan&#39;s GitHub</a>:</p>
 
 <pre><code class="R"># install.packages(&quot;devtools&quot;)
 devtools::install_github(&quot;bpb824/orcycler&quot;)
@@ -98,6 +98,9 @@ devtools::install_github(&quot;bpb824/orcycler&quot;)
             
       <li>
         <code><a href="updateMapMatchLinks.html">updateMapMatchLinks</a></code><br />Update links and trips files from map matching.</li>
+            
+      <li>
+        <code><a href="similarityWeight.html">similarityWeight</a></code><br />Weight trips based on link similarity</li>
     
     </ul>
     <h3>User Functions</h3>
@@ -127,6 +130,9 @@ devtools::install_github(&quot;bpb824/orcycler&quot;)
             
       <li>
         <code><a href="reportPrep.html">reportPrep</a></code><br />Prepare report data</li>
+            
+      <li>
+        <code><a href="attach_ReportGeoData.html">attach_ReportGeoData</a></code><br />Attach geographic data to reports</li>
     
     </ul>
     <h3>General Use Functions</h3>
@@ -146,6 +152,9 @@ devtools::install_github(&quot;bpb824/orcycler&quot;)
             
       <li>
         <code><a href="crossTabPlot.html">crossTabPlot</a></code><br />Cross tablutation plot</li>
+            
+      <li>
+        <code><a href="subDataByGeoBound.html">subDataByGeoBound</a></code><br />Subset data by geographic boundary</li>
     
     </ul>
   </div>
@@ -159,7 +168,7 @@ devtools::install_github(&quot;bpb824/orcycler&quot;)
     <h2>Dependencies</h2>
     <ul>
       
-      <li><strong>Imports</strong>: stats, RPostgreSQL, RMySQL, DBI, rjson, plyr, lubridate, timeDate, ggplot2</li>
+      <li><strong>Imports</strong>: stats, RPostgreSQL, RMySQL, DBI, rjson, plyr, lubridate, timeDate, ggplot2, rgdal, rgeos, sp, Hmisc, shapefiles</li>
       <li><strong>Suggests</strong>: knitr</li>
       
     </ul>

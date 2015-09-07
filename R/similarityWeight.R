@@ -4,7 +4,7 @@
 #' @param trips 'trip' table in format of SQL table
 #' @param tripMatchSummmary Summary table of matched trips
 #'
-#' @return
+#' @return Similarity weights
 #' @export
 similarityWeight = function(matchLinksPath,trips,tripMatchSummmary){
   orc_gpslinks = read.csv(matchLinksPath)
