@@ -1,6 +1,6 @@
 # orcycler
 
-`orcycler` is an R package for managing, exploring, and analyzing data from the ORcycle smartphone app. For more information about ORcycle, visit <http://www.pdx.edu/transportation-lab/orcycle>. The `orcycler` package is being documented using `staticdocs` at <http://orcycle2.cecs.pdx.edu/orcycler/>
+`orcycler` is an R package for managing, exploring, and analyzing data from the ORcycle smartphone app. For more information about ORcycle, visit <http://www.pdx.edu/transportation-lab/orcycle>. The `orcycler` package is being documented using [`staticdocs`](http://staticdocs.had.co.nz/dev/) at <http://orcycle2.cecs.pdx.edu/orcycler/>
 
 ## Installation
 
