@@ -13,10 +13,15 @@ sd_section(
 sd_section(
   "Report Functions",
   "These functions are used to query, prepare, explore, and analyze report data.",
-  c("report_barPlots", "reportPrep","attach_ReportGeoData")
+  c("report_barPlots", "reportPrep","attach_ReportGeoData", "trafficStress")
 )
 sd_section(
   "General Use Functions",
   "These functions are used by other functions in the package.",
   c("imputeResponses", "wrap_sentence","forestplot","crossTabPlot","subDataByGeoBound")
+)
+sd_section(
+  "Google API Utilities",
+  "These functions are used to interact with Google APIs",
+  c("decodeLineR", "getGoogleDirections","lines2points","route2shape")
 )

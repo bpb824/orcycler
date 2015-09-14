@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>userAnalysis. orcycler 0.1.0</title>
+<title>lines2points. orcycler 0.1.0</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -47,26 +47,28 @@
         
       </header>
       
-      <h1>User Analysis</h1>
+      <h1>Convert SpatialLines to coordinate data frame for map matching.</h1>
 
 <div class="row">
   <div class="span8">
     <h2>Usage</h2>
-    <pre><div>userAnalysis(db&nbsp;=&nbsp;"test", db_path&nbsp;=&nbsp;"data/db_credentials.json")</div></pre>
+    <pre><div>lines2points(linesShape, trip_id, dummyDate)</div></pre>
     
     <h2>Arguments</h2>
     <dl>
-      <dt>db</dt>
-      <dd>String indicating which db to use, default is "test", also can be "release"</dd>
-      <dt>db_path</dt>
-      <dd>Absolute or relative path to db_credentials.json file.</dd>
+      <dt>linesShape</dt>
+      <dd>SpatialLines shape containing trip to convert to points</dd>
+      <dt>trip_id</dt>
+      <dd>ID of trip to convert to points</dd>
+      <dt>dummyDate</dt>
+      <dd>Date/time string to use for dummy timestamp in YYYY-MM-DD HH:MM:SS format.</dd>
     </dl>
     
     <div class="Value">
       <h2>Value</h2>
 
       <p><dl>
-User analysis results
+Coordinate data frame to save as .csv for map matching.
 </dl></p>
   
     </div>
@@ -74,13 +76,13 @@ User analysis results
     <div class="Description">
       <h2>Description</h2>
 
-      <p>Initializes database connection and calls series of functions used to analyze ORcycle user data.</p>
+      <p>Convert SpatialLines to coordinate data frame for map matching.</p>
   
     </div>
       </div>
   <div class="span4">
     <!-- <ul>
-      <li>userAnalysis</li>
+      <li>lines2points</li>
     </ul>
     <ul>
       

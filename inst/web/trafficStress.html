@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>userAnalysis. orcycler 0.1.0</title>
+<title>trafficStress. orcycler 0.1.0</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -47,26 +47,24 @@
         
       </header>
       
-      <h1>User Analysis</h1>
+      <h1>Level of Traffic Stress calculation</h1>
 
 <div class="row">
   <div class="span8">
     <h2>Usage</h2>
-    <pre><div>userAnalysis(db&nbsp;=&nbsp;"test", db_path&nbsp;=&nbsp;"data/db_credentials.json")</div></pre>
+    <pre><div>trafficStress(segReports)</div></pre>
     
     <h2>Arguments</h2>
     <dl>
-      <dt>db</dt>
-      <dd>String indicating which db to use, default is "test", also can be "release"</dd>
-      <dt>db_path</dt>
-      <dd>Absolute or relative path to db_credentials.json file.</dd>
+      <dt>segReports</dt>
+      <dd>Reports made on segments of transportation facility (i.e. not at intersections)</dd>
     </dl>
     
     <div class="Value">
       <h2>Value</h2>
 
       <p><dl>
-User analysis results
+Segment report data frame with Level Of Traffic Stress (LTS) calculated
 </dl></p>
   
     </div>
@@ -74,13 +72,20 @@ User analysis results
     <div class="Description">
       <h2>Description</h2>
 
-      <p>Initializes database connection and calls series of functions used to analyze ORcycle user data.</p>
+      <p>Level of Traffic Stress calculation</p>
+  
+    </div>
+
+    <div class="References">
+      <h2>References</h2>
+
+      <p>The logical and mathematical calculations in this function were based upon the "Low Stress Bicycling and Network Connectivity" report developed by Mineta Transportation Institute http://transweb.sjsu.edu/PDFs/research/1005-low-stress-bicycling-network-connectivity.pdf and the Analysis Procedures Manual developed by ODOT: http://www.oregon.gov/ODOT/TD/TP/APM/APMv2.pdf</p>
   
     </div>
       </div>
   <div class="span4">
     <!-- <ul>
-      <li>userAnalysis</li>
+      <li>trafficStress</li>
     </ul>
     <ul>
       

@@ -1,24 +1,17 @@
-#######
-# Level of Traffic Stress calculation script
-# Written by Bryan Blanc
-#######
+#' Level of Traffic Stress calculation
+#'
+#' @param segReports Reports made on segments of transportation facility (i.e. not at intersections)
+#'
+#' @return Segment report data frame with Level Of Traffic Stress (LTS) calculated
+#' @export
+#'
+#' @references The logical and mathematical calculations in this function were based upon the "Low Stress Bicycling and Network Connectivity" report developed by Mineta Transportation Institute http://transweb.sjsu.edu/PDFs/research/1005-low-stress-bicycling-network-connectivity.pdf and the Analysis Procedures Manual developed by ODOT: http://www.oregon.gov/ODOT/TD/TP/APM/APMv2.pdf
+trafficStress = function(segReports){
 
-##The following logical and mathematical calculations were based upon the 
-# "Low Stress Bicycling and Network Connectivity" report developed by Mineta Transportation Institute
-# http://transweb.sjsu.edu/PDFs/research/1005-low-stress-bicycling-network-connectivity.pdf
-# and the Analysis Procedures Manual developed by ODOT: http://www.oregon.gov/ODOT/TD/TP/APM/APMv2.pdf
-
-
-trafficStress = function(reportSummary){
-  
-  ##Constants 
+  ##Constants
   mixedTraffic = c("NONE", "Bicycles Prohibited", "Bicycle Boulevard", "Other Connection")
   sepFacilities = c("Separated Path", "Cycletrack")
-  
-  ####Segments#######
-  #segReports = subset(reportSummary,reportSummary$nearIntersect==TRUE)
-  segReports = reportSummary
-  
+
   for (i in 1:nrow(segReports)){
     if(!is.na(segReports$speed[i]) & !is.na(segReports$numLanesAuto[i])){
       ##Bike Lanes adjacent to parking####
@@ -61,7 +54,7 @@ trafficStress = function(reportSummary){
           }
         }
       }
-      
+
       ##Bike Lanes not adjacent to parking###
       else if(as.character(segReports$bikeTypeLong[i]) == "Bike Lane"  &
               segReports$adjParking[i]==FALSE){
@@ -102,7 +95,7 @@ trafficStress = function(reportSummary){
           }
         }
       }
-      
+
       ##Mixed Traffic Situation####
       else if(as.character(segReports$bikeTypeLong[i]) %in% mixedTraffic){
         if(segReports$centerLine[i]==FALSE){
@@ -141,7 +134,7 @@ trafficStress = function(reportSummary){
           }
         }
       }
-      
+
       ##Other###
       else if(as.character(segReports$bikeTypeLong[i]) %in% sepFacilities){
         segReports$LTS[i] = 1
@@ -150,8 +143,6 @@ trafficStress = function(reportSummary){
       segReports$LTS[i]= NA
     }
   }
-  ####Intersections#####
-    
   return(segReports)
 }
 

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>userAnalysis. orcycler 0.1.0</title>
+<title>route2Shape. orcycler 0.1.0</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -47,26 +47,24 @@
         
       </header>
       
-      <h1>User Analysis</h1>
+      <h1>Convert decoded Google Directions polyline into SpatialLines object</h1>
 
 <div class="row">
   <div class="span8">
     <h2>Usage</h2>
-    <pre><div>userAnalysis(db&nbsp;=&nbsp;"test", db_path&nbsp;=&nbsp;"data/db_credentials.json")</div></pre>
+    <pre><div>route2Shape(directions)</div></pre>
     
     <h2>Arguments</h2>
     <dl>
-      <dt>db</dt>
-      <dd>String indicating which db to use, default is "test", also can be "release"</dd>
-      <dt>db_path</dt>
-      <dd>Absolute or relative path to db_credentials.json file.</dd>
+      <dt>directions</dt>
+      <dd>Decoded polyline directions from Google Directions API</dd>
     </dl>
     
     <div class="Value">
       <h2>Value</h2>
 
       <p><dl>
-User analysis results
+SpatialLines object representing route received from Google Directions API
 </dl></p>
   
     </div>
@@ -74,13 +72,13 @@ User analysis results
     <div class="Description">
       <h2>Description</h2>
 
-      <p>Initializes database connection and calls series of functions used to analyze ORcycle user data.</p>
+      <p>Convert decoded Google Directions polyline into SpatialLines object</p>
   
     </div>
       </div>
   <div class="span4">
     <!-- <ul>
-      <li>userAnalysis</li>
+      <li>route2Shape</li>
     </ul>
     <ul>
       

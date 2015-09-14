@@ -4,10 +4,12 @@
 \alias{userAnalysis}
 \title{User Analysis}
 \usage{
-userAnalysis(db_info)
+userAnalysis(db = "test", db_path = "data/db_credentials.json")
 }
 \arguments{
-\item{db_info}{Absolute or relative path to db_info.txt file.}
+\item{db}{String indicating which db to use, default is "test", also can be "release"}
+
+\item{db_path}{Absolute or relative path to db_credentials.json file.}
 }
 \value{
 User analysis results

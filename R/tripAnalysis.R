@@ -11,13 +11,6 @@
 
 tripAnalysis = function(db="test", db_path = "data/db_credentials.json"){
 
-  ###Load neccesary libraries
-  require(DBI)
-  require(RMySQL)
-  require(lubridate)
-  require(mail)
-  require(rjson)
-
   ###Read in db authentication info
   cred = rjson::fromJSON(file=db_path)
   if(db =="test"){
