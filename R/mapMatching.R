@@ -1,23 +1,3 @@
-updateMapMatching = function(coords, db_type,
-                    pythonPath = "/Users/bblanc/OneDrive/_BikeAppProject/ORcycle_Analysis_Tool_Suite/orcycler_environment/mapMatching/mapmatch_batch.py"){
-  if(db_type=="test"){
-    dbFolder = "testDatabase"
-  }else if(db_type =="release"){
-    dbFolder = "releaseDatabase"
-  }
-
-  updateMapMatchCoords(coords, matchLinksPath = paste0("working_data/",dbFolder,"/orc_gpslinks_raw.csv"), db_version="release")
-
-  print("Running map matching process, this can take a long time. Intermediate output will follow.")
-  system(paste0("python ",pythonPath))
-
-  ###Map Match Python Script must be run if there are new trips to match
-  ###Switch over to PyCharm (or another Python console) to run the map matching script on the new coordinates
-  updateMapMatchLinks(matchLinksPath=paste0("working_data/",dbFolder,"/orc_gpslinks_raw.csv"),
-                      matchTripsPath = paste0("working_data/",dbFolder,"/orc_gpslinks_raw.csv"))
-
-}
-
 #' Update links and trips files from map matching.
 #'
 #' This function updates map-matched links and trips files with results from python scripts stored in local PostgreSQL database.
