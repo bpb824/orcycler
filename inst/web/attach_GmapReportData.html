@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>route2shape. orcycler 0.1.0</title>
+<title>attach_GmapReportData. orcycler 0.1.0</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -47,24 +47,26 @@
         
       </header>
       
-      <h1>Convert decoded Google Directions polyline into SpatialLines object</h1>
+      <h1>Attach Data for Reports Extracted from Google Maps</h1>
 
 <div class="row">
   <div class="span8">
     <h2>Usage</h2>
-    <pre><div>route2shape(directions)</div></pre>
+    <pre><div>attach_GmapReportData(reportSummary, sheetPath)</div></pre>
     
     <h2>Arguments</h2>
     <dl>
-      <dt>directions</dt>
-      <dd>Decoded polyline directions from Google Directions API</dd>
+      <dt>reportSummary</dt>
+      <dd>Report summary data frame to join google map info to.</dd>
+      <dt>sheetPath</dt>
+      <dd>Absolute or relative path to google map data (.csv file)</dd>
     </dl>
     
     <div class="Value">
       <h2>Value</h2>
 
       <p><dl>
-SpatialLines object representing route received from Google Directions API
+Report summary data frame with google map data attached
 </dl></p>
   
     </div>
@@ -72,13 +74,13 @@ SpatialLines object representing route received from Google Directions API
     <div class="Description">
       <h2>Description</h2>
 
-      <p>Convert decoded Google Directions polyline into SpatialLines object</p>
+      <p>Attach Data for Reports Extracted from Google Maps</p>
   
     </div>
       </div>
   <div class="span4">
     <!-- <ul>
-      <li>route2shape</li>
+      <li>attach_GmapReportData</li>
     </ul>
     <ul>
       

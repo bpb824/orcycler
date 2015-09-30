@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>route2shape. orcycler 0.1.0</title>
+<title>reportAnalysis. orcycler 0.1.0</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -47,24 +47,26 @@
         
       </header>
       
-      <h1>Convert decoded Google Directions polyline into SpatialLines object</h1>
+      <h1>Report Analysis</h1>
 
 <div class="row">
   <div class="span8">
     <h2>Usage</h2>
-    <pre><div>route2shape(directions)</div></pre>
+    <pre><div>reportAnalysis(db&nbsp;=&nbsp;"test", db_path&nbsp;=&nbsp;"data/db_credentials.json")</div></pre>
     
     <h2>Arguments</h2>
     <dl>
-      <dt>directions</dt>
-      <dd>Decoded polyline directions from Google Directions API</dd>
+      <dt>db</dt>
+      <dd>String indicating which db to use, default is "test", also can be "release"</dd>
+      <dt>db_path</dt>
+      <dd>Relative or absolute file path to db_credentials.json</dd>
     </dl>
     
     <div class="Value">
       <h2>Value</h2>
 
       <p><dl>
-SpatialLines object representing route received from Google Directions API
+None
 </dl></p>
   
     </div>
@@ -72,13 +74,13 @@ SpatialLines object representing route received from Google Directions API
     <div class="Description">
       <h2>Description</h2>
 
-      <p>Convert decoded Google Directions polyline into SpatialLines object</p>
+      <p>Initializes database connection and calls series of functions used to analyze ORcycle trip data.</p>
   
     </div>
       </div>
   <div class="span4">
     <!-- <ul>
-      <li>route2shape</li>
+      <li>reportAnalysis</li>
     </ul>
     <ul>
       

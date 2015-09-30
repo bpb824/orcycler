@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>route2shape. orcycler 0.1.0</title>
+<title>syncPhotos. orcycler 0.1.0</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -47,24 +47,26 @@
         
       </header>
       
-      <h1>Convert decoded Google Directions polyline into SpatialLines object</h1>
+      <h1>Synchronize Photos in Local Repository with Dropbox Folder</h1>
 
 <div class="row">
   <div class="span8">
     <h2>Usage</h2>
-    <pre><div>route2shape(directions)</div></pre>
+    <pre><div>syncPhotos(localPath, dropPath)</div></pre>
     
     <h2>Arguments</h2>
     <dl>
-      <dt>directions</dt>
-      <dd>Decoded polyline directions from Google Directions API</dd>
+      <dt>localPath</dt>
+      <dd>Absolute or Relative Path to local repository</dd>
+      <dt>dropPath</dt>
+      <dd>Path to dropbox photo repository relative to dropbox root folder</dd>
     </dl>
     
     <div class="Value">
       <h2>Value</h2>
 
       <p><dl>
-SpatialLines object representing route received from Google Directions API
+None
 </dl></p>
   
     </div>
@@ -72,13 +74,13 @@ SpatialLines object representing route received from Google Directions API
     <div class="Description">
       <h2>Description</h2>
 
-      <p>Convert decoded Google Directions polyline into SpatialLines object</p>
+      <p>This will synchronize the photos between a local repository folder in the `orcycler` environment and the dropbox folder where report photos will be hosted.</p>
   
     </div>
       </div>
   <div class="span4">
     <!-- <ul>
-      <li>route2shape</li>
+      <li>syncPhotos</li>
     </ul>
     <ul>
       

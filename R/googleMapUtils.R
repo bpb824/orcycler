@@ -131,7 +131,7 @@ decodeLineR <- function(encoded) {
 #' @return SpatialLines object representing route received from Google Directions API
 #' @export
 
-route2Shape = function(directions){
+route2shape = function(directions){
 
   src <- '
   std::string encoded = as<std::string>(a);

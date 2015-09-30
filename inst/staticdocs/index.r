@@ -13,7 +13,7 @@ sd_section(
 sd_section(
   "Report Functions",
   "These functions are used to query, prepare, explore, and analyze report data.",
-  c("report_barPlots", "reportPrep","attach_ReportGeoData", "trafficStress")
+  c("reportAnalysis","report_barPlots", "reportPrep","attach_ReportGeoData", "trafficStress", "syncPhotos","downloadReportPhotos", "attach_GmapReportData")
 )
 sd_section(
   "General Use Functions",

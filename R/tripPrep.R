@@ -1,22 +1,19 @@
 #' Prepare trip data table
 #'
-#' Proccesses all trip-related SQL data into a single flat table for further exploratory and analysis tasks. 
+#' Proccesses all trip-related SQL data into a single flat table for further exploratory and analysis tasks.
 #'
 #' @param trips 'trip' table from SQL database
 #' @param tripResponses 'tripResponse' table from SQL database
-#' @param answers 'answer' table from SQL database 
-#' @param questions 'question' table from SQL database 
-#' @param qaMap 'question_answer_relate' table from SQL database 
-#' @param coords 'coord' table from SQL database 
+#' @param answers 'answer' table from SQL database
+#' @param questions 'question' table from SQL database
+#' @param qaMap 'question_answer_relate' table from SQL database
+#' @param coords 'coord' table from SQL database
 #'
-#' @return Flat trip table for further exploration/analysis. 
+#' @return Flat trip table for further exploration/analysis.
 #'
 #' @export
-#' 
+#'
 tripPrep = function(trips,tripResponses,answers,questions,qaMap,coords){
-  
-  require(geosphere)
-  
   cols = c("trip_id","cumLength","duration","avgSpeed", "routeFreq", "purpose","routeComfort","routeStress_NA","routeStress_1","routeStress_2","routeStress_3",
            "routeStress_4","routeStress_5","routeStress_6","routeStress_7","routeStress_8","routePref_NA","routePref_1",
            "routePref_2","routePref_3","routePref_4","routePref_5","routePref_6","routePref_7","routePref_8",
@@ -32,7 +29,7 @@ tripPrep = function(trips,tripResponses,answers,questions,qaMap,coords){
   offsets = c(103-18,143-9)
   ordered = c(T,F,T)
   tripResponses = subset(tripResponses,tripResponses$answer_id !=0)
-  
+
   for (j in 1:length(s_qids)){
     qid = s_qids[j]
     var = single[j]
@@ -48,16 +45,16 @@ tripPrep = function(trips,tripResponses,answers,questions,qaMap,coords){
           tripModelTab[i,var] = NA
         }else{
           tripModelTab[i,var] = text
-        } 
+        }
       }else{
         tripModelTab[i,var] = NA
       }
     }
     tripModelTab[,var] = factor(tripModelTab[,var],levels = levels, ordered = ordered[j])
   }
-  
+
   tripModelTab[,multiple]=FALSE
-  
+
   for (j in 1:length(m_qids)){
     qid = m_qids[j]
     off = offsets[j]
@@ -76,7 +73,7 @@ tripPrep = function(trips,tripResponses,answers,questions,qaMap,coords){
       }
     }
   }
-  
+
   startTime = Sys.time()
   n = nrow(tripModelTab)
   print("Beginning trip statistics calculation")
@@ -89,7 +86,7 @@ tripPrep = function(trips,tripResponses,answers,questions,qaMap,coords){
       for (j in 1:(nrow(tripCoords)-1)){
         coord1 = c(tripCoords$longitude[j],tripCoords$latitude[j])
         coord2 = c(tripCoords$longitude[j+1],tripCoords$latitude[j+1])
-        cumLength = cumLength + (distMeeus(p1 = coord1, p2 = coord2))*0.000621371
+        cumLength = cumLength + (geosphere::distMeeus(p1 = coord1, p2 = coord2))*0.000621371
       }
       start = tripCoords$recorded[1]
       end = tripCoords$recorded[nrow(tripCoords)]
@@ -103,8 +100,7 @@ tripPrep = function(trips,tripResponses,answers,questions,qaMap,coords){
   }
   return(tripModelTab)
 }
-    
-    
-    
-    
-  
+
+
+
+

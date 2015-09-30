@@ -1,5 +1,11 @@
-
-attach_GoogleData = function(reportSummary,sheetPath){
+#' Attach Data for Reports Extracted from Google Maps
+#'
+#' @param reportSummary Report summary data frame to join google map info to.
+#' @param sheetPath Absolute or relative path to google map data (.csv file)
+#'
+#' @return Report summary data frame with google map data attached
+#' @export
+attach_GmapReportData = function(reportSummary,sheetPath){
   googleData = read.csv(sheetPath,stringsAsFactors = FALSE)
   for (i in 1:nrow(reportSummary)){
     nid = reportSummary$note_id[i]

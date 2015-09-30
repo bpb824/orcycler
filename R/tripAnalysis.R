@@ -5,12 +5,11 @@
 #' @param db String indicating which db to use, default is "test", also can be "release"
 #' @param db_path Relative or absolute file path to db_credentials.json
 #'
-#' @return Trip analysis results
+#' @return None
 #'
 #' @export
 
-tripAnalysis = function(db="test", db_path = "data/db_credentials.json"){
-
+tripAnalysis = function(db="test", db_path = "source_data/db_credentials.json"){
   ###Read in db authentication info
   cred = rjson::fromJSON(file=db_path)
   if(db =="test"){
@@ -23,10 +22,10 @@ tripAnalysis = function(db="test", db_path = "data/db_credentials.json"){
 
   ####Connect to ORcycle db
   ####Make sure you VPN into cecs network
-  con <- DBI::dbConnect(dbDriver("MySQL"), host=db_cred$db_host, port= 3306, user=db_cred$db_user, password = db_cred$db_pass, dbname=db_cred$db_name)
+  con <- DBI::dbConnect(DBI::dbDriver("MySQL"), host=db_cred$db_host, port= 3306, user=db_cred$db_user, password = db_cred$db_pass, dbname=db_cred$db_name)
 
   #Read raw tables from MySQL database
-  print("reading tables from database, takes at ~1 minute or more")
+  print("reading tables from database, takes ~1 minute or more")
   coords= DBI::dbReadTable(con, "coord")
   trips = DBI::dbReadTable(con, "trip")
   tripResponses = DBI::dbReadTable(con, "tripResponse")
@@ -53,30 +52,30 @@ tripAnalysis = function(db="test", db_path = "data/db_credentials.json"){
                          qaMap=qaMap,coords=coords)
 
   ####Plot single variable distribution plots to results/plots_singleVar/trips, overwrite old results
+  ggplot2::theme_set(ggplot2::theme_bw(base_size = 25))
   trip_barPlots(tripSummary)
+  print("Trip plots printed to results.")
+
+  impCols = colnames(tripSummary)[!(colnames(tripSummary) %in% c("trip_id","cumLength","duration","avgSpeed"))]
+
+  ##Impute Missing Responses
+  print("Imputing missing responses...")
+  tripSumImp = imputeResponses(data=tripSummary,impCols = impCols)
 
   ###Add temporal category data from trip time
   tripSumImpTime = attach_TripTimeData(tripTable=tripSumImp,
                                        trips=trips)
   ###Caution: long function
-  ###Add trip weather data from trip start time and starting location (grabs weather from nearest airport station)
+  ###Add trip weather data from trip start time and starting location
+  # (grabs weather from nearest airport station)
   tripSumImpTimeWthr = attach_TripWeatherData(tripTable=tripSumImpTime,
                                               trips=trips,coords = coords)
 
-  updateMapMatchCoords(coords, matchLinksPath = "working_data/orc_gpslinks_raw.csv")
-
-  ###E-mail notification for script completion
-  #sendmail("bblanc@pdx.edu", subject="Phase 1 of trip analysis complete",
-  #         message="Calculation finished!", password="rmail")
-
-  ###Map Match Python Script must be run if there are new trips to match
-  ###Switch over to PyCharm (or another Python console) to run the map matching script on the new coordinates
-  updateMapMatchLinks(matchLinksPath="working_data/orc_gpslinks_raw.csv",
-                      matchTripsPath = "working_data/orc_gpstrips.csv")
-
+  print("Finished matching weather info, now matching geographic data. This will only used trips that have been matched to the network. To match more trips, see the updateMapMatching() function.")
+  #Attach geographic data from network
   tripSumImpTimeWthrGeo = attach_TripGeoData(tripSummary=tripSumImpTimeWthr,
-                                             matchLinksPath="working_data/orc_gpslinks_raw.csv",
-                                             matchTripsPath = "working_data/orc_gpstrips.csv")
+                                             matchLinksPath=paste0("working_data/",dbFolder,"/orc_gpslinks_raw.csv"),
+                                             matchTripsPath = paste0("working_data/",dbFolder,"/orc_gpstrips.csv"))
 
   ###Analyze trip similarity by user and trip purpose
   tripMatchSummary = subset(tripSumImpTimeWthrGeo, tripSumImpTimeWthrGeo$matched==TRUE)
@@ -86,26 +85,22 @@ tripAnalysis = function(db="test", db_path = "data/db_credentials.json"){
   date = substr(as.character(Sys.time()),1,10)
   saveRDS(tripModel,paste0("working_data/tripModelData/preparedTripModelTab_",date,".rds"))
 
-  ###E-mail notification for script completion
-  #sendmail("bblanc@pdx.edu", subject="Phase 2 of trip analysis complete",
-  #         message="Calculation finished!", password="rmail")
-
-  for (i in 1:nrow(tripTab)){
-    tid = tripTab$trip_id[i]
-    if(tid %in% tripSummary$trip_id){
-      tripTab$routeFreq[i]=tripSummary$routeFreq[tripSummary$trip_id==tid]
-      tripTab$routeComfort[i]=tripSummary$routeComfort[tripSummary$trip_id==tid]
-      tripTab$purpose[i]=tripSummary$purpose[tripSummary$trip_id==tid]
-    }else{
-      tripTab$routeFreq[i]=NA
-      tripTab$routeComfort[i]=NA
-      tripTab$purpose[i]=NA
-    }
-
-  }
-  tmImp = imputeResponses(data=tripTab,impCols = c(2:29,46:81))
-  date = substr(as.character(Sys.time()),1,10)
-  saveRDS(tmImp,paste0("working_data/tripModelData/preparedTripModelTab_",date,".rds"))
+  # for (i in 1:nrow(tripTab)){
+  #   tid = tripTab$trip_id[i]
+  #   if(tid %in% tripSummary$trip_id){
+  #     tripTab$routeFreq[i]=tripSummary$routeFreq[tripSummary$trip_id==tid]
+  #     tripTab$routeComfort[i]=tripSummary$routeComfort[tripSummary$trip_id==tid]
+  #     tripTab$purpose[i]=tripSummary$purpose[tripSummary$trip_id==tid]
+  #   }else{
+  #     tripTab$routeFreq[i]=NA
+  #     tripTab$routeComfort[i]=NA
+  #     tripTab$purpose[i]=NA
+  #   }
+  #
+  # }
+  #
+  # date = substr(as.character(Sys.time()),1,10)
+  # saveRDS(tmImp,paste0("working_data/tripModelData/preparedTripModelTab_",db,"_",date,".rds"))
 }
 
 

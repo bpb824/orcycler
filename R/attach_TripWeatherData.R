@@ -6,10 +6,10 @@
 #' @param trips 'trip' table from SQL database
 #' @param coords 'coord' table from SQL database
 #'
-#' @return Trip table with weather data attached. 
+#' @return Trip table with weather data attached.
 #'
 #' @export
-#' 
+#'
 attach_TripWeatherData= function (tripTable,trips,coords){
   tripList = trips$id
   n = nrow(trips)
@@ -32,12 +32,12 @@ attach_TripWeatherData= function (tripTable,trips,coords){
     trips$lastLong[i] = mean(end$longitude)
     print(paste("calculated for trip number ",i,"of ",n))
   }
-  
+
   trips$start = as.POSIXct(strptime(trips$start,format= "%Y-%m-%d %H:%M:%S"))
   trips$stop = as.POSIXct(strptime(trips$stop,format= "%Y-%m-%d %H:%M:%S"))
-  
+
   require(weatherData)
-  airStations = read.csv("data/weatherStations/weatherStations.csv")
+  airStations = read.csv("source_data/weatherStations/weatherStations.csv")
   #airStations = read.csv("/Users/orcycle/OneDrive/_BikeAppProject/ORcycle\ Analysis\ Tool\ Suite/source_data/weatherStations/weatherStations.csv")
   tripWeather = data.frame(matrix(nrow=length(tripList),ncol=7))
   colnames(tripWeather) = c("trip_id","temp","windSpeed","windGust","precip","conditions","hasWeather")
@@ -56,7 +56,7 @@ attach_TripWeatherData= function (tripTable,trips,coords){
     closest = as.character(airStations$ID[minCol])
     tripDate = as.Date(trips$date[i])
     tripTime = trips$start[i]
-    weather = getWeatherForDate(closest,tripDate,opt_detailed=TRUE,opt_all_columns = TRUE)
+    weather = weatherData::getWeatherForDate(closest,tripDate,opt_detailed=TRUE,opt_all_columns = TRUE)
     if(is.null(weather)){
       tripWeather$temp[i] = NA
       tripWeather$windSpeed[i] = NA
@@ -73,10 +73,10 @@ attach_TripWeatherData= function (tripTable,trips,coords){
       tripWeather$precip[i]=current$PrecipitationIn
       tripWeather$conditions[i]=current$Conditions
     }
-    
+
     print(paste("Grabbed weather for trip #",i," of ",n))
   }
-  
+
   for (i in 1:nrow(tripWeather)){
     if (tripWeather$hasWeather[i]){
       ws = tripWeather$windSpeed[i]
@@ -93,11 +93,11 @@ attach_TripWeatherData= function (tripTable,trips,coords){
       }
     }
   }
-  
+
   tripWeather$windSpeed = as.numeric(tripWeather$windSpeed)
   tripWeather$windGust = as.numeric(tripWeather$windGust)
   tripWeather$precip = as.numeric(tripWeather$precip)
-  
+
   tripWeather$condCat[as.character(tripWeather$conditions) == "Overcast" | as.character(tripWeather$conditions) == "Mostly Cloudy"] = "Heavy Clouds"
   tripWeather$condCat[as.character(tripWeather$conditions) == "Partly Cloudy" | as.character(tripWeather$conditions) == "Scattered Clouds"] = "Light Clouds"
   tripWeather$condCat[as.character(tripWeather$conditions) == "Patches of Fog" | as.character(tripWeather$conditions) == "Shallow Fog" | as.character(tripWeather$conditions) == "Fog"] = "Fog"
@@ -106,6 +106,6 @@ attach_TripWeatherData= function (tripTable,trips,coords){
   tripWeather$condCat[as.character(tripWeather$conditions) == "Clear" ] = "Clear"
   tripWeather$condCat = factor(tripWeather$condCat)
   tripWeather$condCat = relevel(tripWeather$condCat, ref = "Clear")
-  
-  return(join(tripTable,tripWeather,by = "trip_id"))
+
+  return(plyr::join(tripTable,tripWeather,by = "trip_id"))
 }

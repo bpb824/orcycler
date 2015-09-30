@@ -23,8 +23,8 @@ userAnalysis = function(db = "test", db_path = "data/db_credentials.json"){
 
   ####Connect to ORcycle db
   ####Make sure you VPN into cecs network
-  con <- dbConnect(dbDriver("MySQL"), host=host, port= 3306, user=user_name, password = password, dbname=db_name)
-
+  con <- DBI::dbConnect(dbDriver("MySQL"), host=db_cred$db_host, port= 3306, user=db_cred$db_user, password = db_cred$db_pass, dbname=db_cred$db_name)
+  
   ###Read in tables needed for user analyses
   users = dbReadTable(con,"user")
   userResponses = dbReadTable(con,"userResponse")
