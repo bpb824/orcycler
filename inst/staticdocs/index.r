@@ -18,7 +18,7 @@ sd_section(
 sd_section(
   "General Use Functions",
   "These functions are used by other functions in the package.",
-  c("imputeResponses", "wrap_sentence","forestplot","crossTabPlot","subDataByGeoBound")
+  c("imputeResponses", "wrap_sentence","forestplot","crossTabPlot","subDataByGeoBound","classifyCoordsGeoBound")
 )
 sd_section(
   "Google API Utilities",

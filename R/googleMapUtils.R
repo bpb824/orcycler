@@ -13,7 +13,6 @@ getGoogleDirections <- function(from, to, key) {
   from=paste(from[2],from[1],sep=",")
   to = paste(to[2],to[1],sep=",")
 
-  Sys.sleep(1) #let's be nice internet citizens and wait 1s
   baseurl <- "https://maps.googleapis.com/maps/api/directions/json?origin="
   url = paste0(baseurl,from,"&destination=",to,"&mode=bicycling&key=",key)
   rjson::fromJSON(paste(readLines(url), collapse=""))

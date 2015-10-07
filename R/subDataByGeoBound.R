@@ -138,3 +138,42 @@ subDataByGeoBound= function(con,boundShape,folderName,startDate,endDate,privacy 
     write.csv(qaMap,paste0(dir,"/qaMap.csv"),row.names = FALSE)
   }
 }
+
+#' Classify coordinate data by geographic boundary
+#'
+#' @param con Database connection object
+#' @param boundShape Geographc subsetting boundary file (SpatialPolygons object)
+#' @param labelField Field name of categorization label
+#'
+#' @return None
+#' @export
+
+classifyCoordsGeoBound= function(coords,boundShape,labelField){
+
+  ###Get spatial file for both coords and notes
+
+  ##coords
+  points = data.frame(matrix(ncol=4,nrow = nrow(coords)))
+  colnames(points) = c("id","trip_id","X","Y")
+  points$id = rownames(coords)
+  points$trip_id = coords$trip_id
+  points$X = coords$longitude
+  points$Y = coords$latitude
+  sp::coordinates(points)=~X+Y
+  points@proj4string = sp::CRS("+init=epsg:4326")
+
+  ##transform boundary shape to WGS 84
+  boundShape = sp::spTransform(boundShape,CRS("+init=epsg:4326"))
+
+  #retrieve intersection of trip coords and boundary
+  intersect = sp::over(as(points,"SpatialPoints"),as(boundShape,"SpatialPolygons"), byid= c(FALSE,TRUE))
+  if(!is.null(intersect)){
+    boundary_id = as.numeric(intersect)
+    coords$bound_label = boundShape@data[,labelField][boundary_id]
+    return(coords)
+  }else{
+    stop("No intersections found. Try another boundary file.")
+  }
+  
+}
+
