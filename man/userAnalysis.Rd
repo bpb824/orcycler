@@ -4,7 +4,7 @@
 \alias{userAnalysis}
 \title{User Analysis}
 \usage{
-userAnalysis(db = "test", db_path = "data/db_credentials.json")
+userAnalysis(db = "test", db_path = "source_data/db_credentials.json")
 }
 \arguments{
 \item{db}{String indicating which db to use, default is "test", also can be "release"}

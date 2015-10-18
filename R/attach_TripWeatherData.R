@@ -36,7 +36,7 @@ attach_TripWeatherData= function (tripTable,trips,coords){
   trips$start = as.POSIXct(strptime(trips$start,format= "%Y-%m-%d %H:%M:%S"))
   trips$stop = as.POSIXct(strptime(trips$stop,format= "%Y-%m-%d %H:%M:%S"))
 
-  require(weatherData)
+  #require(weatherData)
   airStations = read.csv("source_data/weatherStations/weatherStations.csv")
   #airStations = read.csv("/Users/orcycle/OneDrive/_BikeAppProject/ORcycle\ Analysis\ Tool\ Suite/source_data/weatherStations/weatherStations.csv")
   tripWeather = data.frame(matrix(nrow=length(tripList),ncol=7))

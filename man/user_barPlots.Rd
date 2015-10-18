@@ -4,10 +4,12 @@
 \alias{user_barPlots}
 \title{User response plotting}
 \usage{
-user_barPlots(userSummary)
+user_barPlots(userSummary, outDir)
 }
 \arguments{
 \item{userSummary}{User summary table outputted from \code{\link{userPrep}}}
+
+\item{outDir}{Relative or absolute directory destination for resultant plots}
 }
 \value{
 None

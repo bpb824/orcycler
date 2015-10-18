@@ -43,6 +43,7 @@ tripAnalysis = function(db="test", db_path = "source_data/db_credentials.json"){
   tripResponses = subset(tripResponses, tripResponses$trip_id %in% trips$id)
   trips = subset(trips,trips$n_coord>0)
   trips = subset(trips, trips$notes!="test")
+  trips = subset(trips,trips$n_coord>100)
   coords = subset(coords,coords$trip_id %in% trips$id)
 
   ###Combine useful data from db tables into one table for exploration/modeling/graphing
@@ -51,9 +52,22 @@ tripAnalysis = function(db="test", db_path = "source_data/db_credentials.json"){
                          answers=answers,questions=questions,
                          qaMap=qaMap,coords=coords)
 
-  ####Plot single variable distribution plots to results/plots_singleVar/trips, overwrite old results
+  ####Plot single variable distribution plots to results/{db}/plots_singleVar/trips, overwrite old results
+  
+  if(!dir.exists("results")){
+    dir.create("results")
+  }
+  if(!dir.exists(db)){
+    dir.create(paste0("results/",db))
+  }
+  if(!dir.exists(paste0("results/",db,"/plots_singleVar"))){
+    dir.create(paste0("results/",db,"/plots_singleVar"))
+  }
+  if(!dir.exists(paste0("results/",db,"/plots_singleVar/trips"))){
+    dir.create(paste0("results/",db,"/plots_singleVar/trips"))
+  }
   ggplot2::theme_set(ggplot2::theme_bw(base_size = 25))
-  trip_barPlots(tripSummary)
+  trip_barPlots(tripSummary,outDir=paste0("results/",db,"/plots_singleVar/trips/"))
   print("Trip plots printed to results.")
 
   impCols = colnames(tripSummary)[!(colnames(tripSummary) %in% c("trip_id","cumLength","duration","avgSpeed"))]
@@ -71,19 +85,21 @@ tripAnalysis = function(db="test", db_path = "source_data/db_credentials.json"){
   tripSumImpTimeWthr = attach_TripWeatherData(tripTable=tripSumImpTime,
                                               trips=trips,coords = coords)
 
-  print("Finished matching weather info, now matching geographic data. This will only used trips that have been matched to the network. To match more trips, see the updateMapMatching() function.")
+  print("Finished matching weather info, now matching geographic data. This will only use trips that have been matched to the network. To match more trips, see the updateMapMatching() function.")
   #Attach geographic data from network
   tripSumImpTimeWthrGeo = attach_TripGeoData(tripSummary=tripSumImpTimeWthr,
                                              matchLinksPath=paste0("working_data/",dbFolder,"/orc_gpslinks_raw.csv"),
                                              matchTripsPath = paste0("working_data/",dbFolder,"/orc_gpstrips.csv"))
-
+  
+  print("Finished matching geographic information, analyzing trip similarity")
   ###Analyze trip similarity by user and trip purpose
   tripMatchSummary = subset(tripSumImpTimeWthrGeo, tripSumImpTimeWthrGeo$matched==TRUE)
   tripModel = similarityWeight(matchLinksPath = "working_data/orc_gpslinks_raw.csv", trips = trips, tripMatchSummmary = tripMatchSummary)
 
   ###Save out prepared trip model table
+  print("Saving out prepared trip model table")
   date = substr(as.character(Sys.time()),1,10)
-  saveRDS(tripModel,paste0("working_data/tripModelData/preparedTripModelTab_",date,".rds"))
+  saveRDS(tripModel,paste0("working_data/",db,"/tripModelData/preparedTripModelTab_",date,".rds"))
 
   # for (i in 1:nrow(tripTab)){
   #   tid = tripTab$trip_id[i]

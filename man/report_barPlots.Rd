@@ -4,7 +4,7 @@
 \alias{report_barPlots}
 \title{Plot distribution plots for report variables}
 \usage{
-report_barPlots(reportSummary, reportType)
+report_barPlots(reportSummary, reportType, outDir)
 }
 \arguments{
 \item{reportSummary}{Prepared report data summary}

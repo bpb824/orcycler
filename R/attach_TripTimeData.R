@@ -11,12 +11,11 @@
 #' 
 
 attach_TripTimeData= function(tripTable,trips){
-  require(lubridate)
   
   trips$start=as.POSIXct(trips$start, format ="%Y-%m-%d %H:%M:%S")
   trips$stop=as.POSIXct(trips$stop, format ="%Y-%m-%d %H:%M:%S")
-  trips$startTime = hour(trips$start)+minute(trips$start)/60+second(trips$start)/3600
-  trips$finishTime = hour(trips$stop)+minute(trips$stop)/60+second(trips$stop)/3600
+  trips$startTime = lubridate::hour(trips$start)+lubridate::minute(trips$start)/60+lubridate::second(trips$start)/3600
+  trips$finishTime = lubridate::hour(trips$stop)+lubridate::minute(trips$stop)/60+lubridate::second(trips$stop)/3600
   for (i in 1:nrow(trips)){
     start = trips$startTime[i]
     finish = trips$finishTime[i]
@@ -67,6 +66,6 @@ attach_TripTimeData= function(tripTable,trips){
   }
   tripTimeData = cbind(trips$id,trips[,20:27])
   colnames(tripTimeData)[1]="trip_id"
-  joined = join(tripTable,tripTimeData,by="trip_id")
+  joined = plyr::join(tripTable,tripTimeData,by="trip_id")
   return(joined)
 }

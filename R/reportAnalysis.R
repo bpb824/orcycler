@@ -22,7 +22,7 @@ reportAnalysis = function(db = "test", db_path = "data/db_credentials.json"){
 
   ####Connect to ORcycle db
   ####Make sure you VPN into cecs network
-  con <- DBI::dbConnect(dbDriver("MySQL"), host=db_cred$db_host, port= 3306, user=db_cred$db_user, password = db_cred$db_pass, dbname=db_cred$db_name)
+  con <- DBI::dbConnect(RMySQL::MySQL(), host=db_cred$db_host, port= 3306, user=db_cred$db_user, password = db_cred$db_pass, dbname=db_cred$db_name)
 
   ###Read in tables needed for user analyses
   users = DBI::dbReadTable(con,"user")
@@ -53,19 +53,22 @@ reportAnalysis = function(db = "test", db_path = "data/db_credentials.json"){
                             answers = answers,
                             qaMap = qaMap)
 
-  ####Plot single variable distribution plots to results/plots_singleVar/trips, overwrite old results
+  ####Plot single variable distribution plots to results/{db}/plots_singleVar/reports, overwrite old results
   if(!dir.exists("results")){
     dir.create("results")
   }
-  if(!dir.exists("results/plots_singleVar")){
-    dir.create("results/plots_singleVar")
+  if(!dir.exists(db)){
+    dir.create(paste0("results/",db))
   }
-  if(!dir.exists("results/plots_singleVar/users")){
-    dir.create("results/plots_singleVar/users")
+  if(!dir.exists(paste0("results/",db,"/plots_singleVar"))){
+    dir.create(paste0("results/",db,"/plots_singleVar"))
   }
-
-  report_barPlots(crashSummary,reportType = 0)
-  report_barPlots(issueSummary,reportType = 1)
+  if(!dir.exists(paste0("results/",db,"/plots_singleVar/reports"))){
+    dir.create(paste0("results/",db,"/plots_singleVar/reports"))
+  }
+  report_barPlots(crashSummary,reportType = 0,outDir=paste0("results/",db,"/plots_singleVar/reports/"))
+  report_barPlots(issueSummary,reportType = 1, outDir = paste0("results/",db,"/plots_singleVar/reports/"))
+  print("Report plots printed to results")
 
   ###Attach geographic data to notes
   crashSummary = attach_ReportGeoData(crashSummary,notes)

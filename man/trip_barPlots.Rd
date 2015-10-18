@@ -4,10 +4,12 @@
 \alias{trip_barPlots}
 \title{Trip response plotting}
 \usage{
-trip_barPlots(tripSummary)
+trip_barPlots(tripSummary, outDir)
 }
 \arguments{
 \item{tripSummary}{Trip summary table outputted from \code{\link{tripPrep}}}
+
+\item{outDir}{Relative or absolute directory destination for resultant plots}
 }
 \value{
 None
